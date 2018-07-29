@@ -59,31 +59,16 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
-					<string>## CHECK IF ALL THE NECESSARY SHIT IS INSTALLED 
-# SKIP IT ALL IF WE'VE BEEN THROUGH THIS BEFORE 
-if [ -f ~/.ptpimg.key ]; then
-	#Logically, if this file is written only if all the conditions are met and can't be written/exisiting if the conditions are met, then it should be fine right?
-	echo "Token found, therefore skipping all the dependencies"
-else
-	# If there is no python3 present
-	if [ ! -f /usr/local/bin/python3 ]; then
-		echo "Python3 wasn't found in /usr/local/bin/python3"
-		osascript -e 'display alert "Python3 not found in /usr/local/bin/" message "Please install Python3 into this directory. Check the OP in the forums if you need help."'
-	exit 1
-	else
-		echo "Python3 was found in /usr/local/bin/python3"
-	fi
-	# Run the install for the dependencies, it will skip them if they're already installed
-	/usr/local/bin/pip3 install ptpimg_uploader
-	# If Create the key if it's not there.
-	if [ ! -f ~/.ptpimg.key ]; then
-	        osascript&lt;&lt;EOD
-	        display dialog "Enter your ptpimg.me token" default answer "Log in to ptpimg.me, view srouce, CTRL F for value"
-	        set token to text returned of the result
-	        do shell script "echo  " &amp; quoted form of token &amp; " &gt; ~/.ptpimg.key"
-	        do shell script "chmod 0600 ~/.ptpimg.key"
+					<string>if [ ! -f ~/.ptpimg.key ]; then
+        token=$(osascript&lt;&lt;EOD
+        set token to text returned of (display dialog "Enter your ptpimg.me token" default answer "Log in to ptpimg.me, view srouce, CTRL F for value")
+        token
+        $token
 EOD
-	fi
+)
+        token=$(sed 's/-//g' &lt;&lt;&lt; $token)
+        echo "$token" &gt; ~/.ptpimg.key
+        chmod 0600 ~/.ptpimg.key
 fi</string>
 					<key>CheckedForUserDefaultShell</key>
 					<true/>
@@ -197,7 +182,7 @@ fi</string>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>309.000000:860.000000</string>
+				<string>309.000000:353.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/English.lproj/main.nib</string>
 			</dict>
@@ -369,7 +354,7 @@ fi</string>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>309.000000:1043.000000</string>
+				<string>309.000000:536.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/English.lproj/main.nib</string>
 			</dict>
@@ -425,12 +410,13 @@ fi</string>
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
-					<string>#Upload saved image to ptpimg.me using the apikey found in home folder
-/usr/local/bin/ptpimg_uploader /private/tmp/toup.png --api-key=$(cat ~/.ptpimg.key)</string>
+					<string>link=$(curl -F "file-upload[0]=@/private/tmp/toup.png" -F api_key=$(cat ~/.ptpimg.key) "https://ptpimg.me/upload.php" |awk -F ":|," '!(NR%4){print p$2}{p=$2}'|sed 's/^.*"\(.*\)" "\(.*\)".*$/https:\/\/ptpimg.me\/\1.\2/')
+
+echo $link</string>
 					<key>CheckedForUserDefaultShell</key>
 					<true/>
 					<key>inputMethod</key>
-					<integer>1</integer>
+					<integer>0</integer>
 					<key>shell</key>
 					<string>/bin/bash</string>
 					<key>source</key>
@@ -451,7 +437,7 @@ fi</string>
 				<key>Class Name</key>
 				<string>RunShellScriptAction</string>
 				<key>InputUUID</key>
-				<string>37166B5A-6C80-421F-B1DB-FFA8A75F4327</string>
+				<string>4C1242E7-DF65-4969-BC2D-01FB3E87DB9D</string>
 				<key>Keywords</key>
 				<array>
 					<string>Shell</string>
@@ -461,9 +447,9 @@ fi</string>
 					<string>Unix</string>
 				</array>
 				<key>OutputUUID</key>
-				<string>D6B1F668-63E1-49B0-8072-03D581B6D39D</string>
+				<string>8ED6F051-9AF8-4E74-8193-23487E54CCB6</string>
 				<key>UUID</key>
-				<string>AA59FB14-EA4F-4483-82FE-0EF5BB7D84C4</string>
+				<string>56426A44-F004-4E3A-AC8E-F3FE2E1C829B</string>
 				<key>UnlocalizedApplications</key>
 				<array>
 					<string>Automator</string>
@@ -536,10 +522,12 @@ fi</string>
 						<string>4</string>
 					</dict>
 				</dict>
+				<key>conversionLabel</key>
+				<integer>0</integer>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>309.000000:1226.000000</string>
+				<string>309.000000:728.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/English.lproj/main.nib</string>
 			</dict>
@@ -649,7 +637,7 @@ fi</string>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>309.000000:1332.000000</string>
+				<string>309.000000:834.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Set Value of Variable.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
@@ -858,7 +846,7 @@ fi</string>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>309.000000:1588.000000</string>
+				<string>309.000000:1090.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Display Notification.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
@@ -1028,7 +1016,7 @@ rm /private/tmp/toup.png</string>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>309.000000:1771.000000</string>
+				<string>309.000000:1273.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/English.lproj/main.nib</string>
 			</dict>
@@ -1038,47 +1026,47 @@ rm /private/tmp/toup.png</string>
 	</array>
 	<key>connectors</key>
 	<dict>
-		<key>31CA044F-BD90-4B14-B2C8-47DF1294DDAB</key>
+		<key>5AEC168E-0B30-49D2-9A9A-3F7DA6D1A434</key>
 		<dict>
 			<key>from</key>
-			<string>132F3CD7-3521-40EF-BEEF-4963930C7678 - 132F3CD7-3521-40EF-BEEF-4963930C7678</string>
+			<string>56426A44-F004-4E3A-AC8E-F3FE2E1C829B - 56426A44-F004-4E3A-AC8E-F3FE2E1C829B</string>
 			<key>to</key>
-			<string>CF01A79F-F97E-43FC-ADA2-667CAA30FED5 - CF01A79F-F97E-43FC-ADA2-667CAA30FED5</string>
+			<string>346EAD63-B813-4452-BA46-D61F48DF3A64 - 346EAD63-B813-4452-BA46-D61F48DF3A64</string>
 		</dict>
-		<key>4BDAADF4-BC1B-4E2C-A523-3BB0E4A94C8E</key>
+		<key>61AF6778-201F-439A-B2A7-5A48E442AB91</key>
 		<dict>
 			<key>from</key>
 			<string>346EAD63-B813-4452-BA46-D61F48DF3A64 - 346EAD63-B813-4452-BA46-D61F48DF3A64</string>
 			<key>to</key>
 			<string>0A805A95-D9BA-47C2-A8E5-E9F94FC1BCCA - 0A805A95-D9BA-47C2-A8E5-E9F94FC1BCCA</string>
 		</dict>
-		<key>58BA6AD4-86B1-402C-9D7E-13B4B6451A89</key>
+		<key>7629F097-270A-4CBA-A189-CB0879224DB2</key>
 		<dict>
 			<key>from</key>
 			<string>8AB4266B-1A5A-490D-B299-C0E990BEF9BF - 8AB4266B-1A5A-490D-B299-C0E990BEF9BF</string>
 			<key>to</key>
 			<string>C1F06CFE-94FC-4FA9-8235-833DDA49AEBD - C1F06CFE-94FC-4FA9-8235-833DDA49AEBD</string>
 		</dict>
-		<key>6267FB5C-B631-40E0-980E-5F7836C7CB67</key>
+		<key>AA0063D0-D7ED-4BD6-9ECC-B42B433D3398</key>
 		<dict>
 			<key>from</key>
 			<string>0A805A95-D9BA-47C2-A8E5-E9F94FC1BCCA - 0A805A95-D9BA-47C2-A8E5-E9F94FC1BCCA</string>
 			<key>to</key>
 			<string>8AB4266B-1A5A-490D-B299-C0E990BEF9BF - 8AB4266B-1A5A-490D-B299-C0E990BEF9BF</string>
 		</dict>
-		<key>C8FDCDAC-9E8E-4251-8F28-A5ADE45EF5D2</key>
-		<dict>
-			<key>from</key>
-			<string>AA59FB14-EA4F-4483-82FE-0EF5BB7D84C4 - AA59FB14-EA4F-4483-82FE-0EF5BB7D84C4</string>
-			<key>to</key>
-			<string>346EAD63-B813-4452-BA46-D61F48DF3A64 - 346EAD63-B813-4452-BA46-D61F48DF3A64</string>
-		</dict>
-		<key>CC5DA6F3-5F00-4F43-9434-0A125A270C3A</key>
+		<key>B7CBDC9E-B257-4BCB-9471-6BC261137BEA</key>
 		<dict>
 			<key>from</key>
 			<string>CF01A79F-F97E-43FC-ADA2-667CAA30FED5 - CF01A79F-F97E-43FC-ADA2-667CAA30FED5</string>
 			<key>to</key>
-			<string>AA59FB14-EA4F-4483-82FE-0EF5BB7D84C4 - AA59FB14-EA4F-4483-82FE-0EF5BB7D84C4</string>
+			<string>56426A44-F004-4E3A-AC8E-F3FE2E1C829B - 56426A44-F004-4E3A-AC8E-F3FE2E1C829B</string>
+		</dict>
+		<key>F323FE19-738F-4310-BE4F-13D2946F678E</key>
+		<dict>
+			<key>from</key>
+			<string>132F3CD7-3521-40EF-BEEF-4963930C7678 - 132F3CD7-3521-40EF-BEEF-4963930C7678</string>
+			<key>to</key>
+			<string>CF01A79F-F97E-43FC-ADA2-667CAA30FED5 - CF01A79F-F97E-43FC-ADA2-667CAA30FED5</string>
 		</dict>
 	</dict>
 	<key>variables</key>

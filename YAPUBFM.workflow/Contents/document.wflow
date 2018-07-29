@@ -59,7 +59,8 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
-					<string>if [ ! -f ~/.ptpimg.key ]; then
+					<string>#store the key if it ain't on disk yet
+if [ ! -f ~/.ptpimg.key ]; then
         token=$(osascript&lt;&lt;EOD
         set token to text returned of (display dialog "Enter your ptpimg.me token" default answer "Log in to ptpimg.me, view srouce, CTRL F for value")
         token
@@ -69,7 +70,16 @@ EOD
         token=$(sed 's/-//g' &lt;&lt;&lt; $token)
         echo "$token" &gt; ~/.ptpimg.key
         chmod 0600 ~/.ptpimg.key
-fi</string>
+fi
+
+#Start an interactive screencapture that saves to the specified location
+/usr/sbin/screencapture -i /private/tmp/toup.png
+
+#Upload the image and parse it
+link=$(curl -F "file-upload[0]=@/private/tmp/toup.png" -F api_key=$(cat ~/.ptpimg.key) "https://ptpimg.me/upload.php" |awk -F ":|," '!(NR%4){print p$2}{p=$2}'|sed 's/^.*"\(.*\)" "\(.*\)".*$/https:\/\/ptpimg.me\/\1.\2/')
+
+#return link
+echo $link</string>
 					<key>CheckedForUserDefaultShell</key>
 					<true/>
 					<key>inputMethod</key>
@@ -182,7 +192,7 @@ fi</string>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>309.000000:353.000000</string>
+				<string>309.000000:532.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/English.lproj/main.nib</string>
 			</dict>
@@ -197,342 +207,68 @@ fi</string>
 					<key>Container</key>
 					<string>List</string>
 					<key>Optional</key>
-					<true/>
+					<false/>
 					<key>Types</key>
 					<array>
-						<string>com.apple.cocoa.string</string>
+						<string>com.apple.cocoa.attributed-string</string>
 					</array>
 				</dict>
 				<key>AMActionVersion</key>
-				<string>2.0.3</string>
+				<string>1.2.1</string>
 				<key>AMApplication</key>
 				<array>
-					<string>Automator</string>
+					<string>System</string>
 				</array>
 				<key>AMParameterProperties</key>
-				<dict>
-					<key>COMMAND_STRING</key>
-					<dict/>
-					<key>CheckedForUserDefaultShell</key>
-					<dict/>
-					<key>inputMethod</key>
-					<dict/>
-					<key>shell</key>
-					<dict/>
-					<key>source</key>
-					<dict/>
-				</dict>
+				<dict/>
 				<key>AMProvides</key>
-				<dict>
-					<key>Container</key>
-					<string>List</string>
-					<key>Types</key>
-					<array>
-						<string>com.apple.cocoa.string</string>
-					</array>
-				</dict>
-				<key>ActionBundlePath</key>
-				<string>/System/Library/Automator/Run Shell Script.action</string>
-				<key>ActionName</key>
-				<string>Run Shell Script</string>
-				<key>ActionParameters</key>
-				<dict>
-					<key>COMMAND_STRING</key>
-					<string>#Start an interactive screencapture that saves to the specified location
-/usr/sbin/screencapture -i /private/tmp/toup.png </string>
-					<key>CheckedForUserDefaultShell</key>
-					<true/>
-					<key>inputMethod</key>
-					<integer>0</integer>
-					<key>shell</key>
-					<string>/bin/bash</string>
-					<key>source</key>
-					<string></string>
-				</dict>
-				<key>BundleIdentifier</key>
-				<string>com.apple.RunShellScript</string>
-				<key>CFBundleVersion</key>
-				<string>2.0.3</string>
-				<key>CanShowSelectedItemsWhenRun</key>
-				<false/>
-				<key>CanShowWhenRun</key>
-				<true/>
-				<key>Category</key>
-				<array>
-					<string>AMCategoryUtilities</string>
-				</array>
-				<key>Class Name</key>
-				<string>RunShellScriptAction</string>
-				<key>IgnoresInput</key>
-				<true/>
-				<key>InputUUID</key>
-				<string>C2E4A7E4-EADE-4497-BAB3-5B609EB4DBB4</string>
-				<key>Keywords</key>
-				<array>
-					<string>Shell</string>
-					<string>Script</string>
-					<string>Command</string>
-					<string>Run</string>
-					<string>Unix</string>
-				</array>
-				<key>OutputUUID</key>
-				<string>607FA9E7-93BB-4D8B-8AFF-6C0A02C50163</string>
-				<key>UUID</key>
-				<string>CF01A79F-F97E-43FC-ADA2-667CAA30FED5</string>
-				<key>UnlocalizedApplications</key>
-				<array>
-					<string>Automator</string>
-				</array>
-				<key>arguments</key>
-				<dict>
-					<key>0</key>
-					<dict>
-						<key>default value</key>
-						<integer>0</integer>
-						<key>name</key>
-						<string>inputMethod</string>
-						<key>required</key>
-						<string>0</string>
-						<key>type</key>
-						<string>0</string>
-						<key>uuid</key>
-						<string>0</string>
-					</dict>
-					<key>1</key>
-					<dict>
-						<key>default value</key>
-						<string></string>
-						<key>name</key>
-						<string>source</string>
-						<key>required</key>
-						<string>0</string>
-						<key>type</key>
-						<string>0</string>
-						<key>uuid</key>
-						<string>1</string>
-					</dict>
-					<key>2</key>
-					<dict>
-						<key>default value</key>
-						<false/>
-						<key>name</key>
-						<string>CheckedForUserDefaultShell</string>
-						<key>required</key>
-						<string>0</string>
-						<key>type</key>
-						<string>0</string>
-						<key>uuid</key>
-						<string>2</string>
-					</dict>
-					<key>3</key>
-					<dict>
-						<key>default value</key>
-						<string></string>
-						<key>name</key>
-						<string>COMMAND_STRING</string>
-						<key>required</key>
-						<string>0</string>
-						<key>type</key>
-						<string>0</string>
-						<key>uuid</key>
-						<string>3</string>
-					</dict>
-					<key>4</key>
-					<dict>
-						<key>default value</key>
-						<string>/bin/sh</string>
-						<key>name</key>
-						<string>shell</string>
-						<key>required</key>
-						<string>0</string>
-						<key>type</key>
-						<string>0</string>
-						<key>uuid</key>
-						<string>4</string>
-					</dict>
-				</dict>
-				<key>isViewVisible</key>
-				<true/>
-				<key>location</key>
-				<string>309.000000:536.000000</string>
-				<key>nibPath</key>
-				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/English.lproj/main.nib</string>
-			</dict>
-			<key>isViewVisible</key>
-			<true/>
-		</dict>
-		<dict>
-			<key>action</key>
-			<dict>
-				<key>AMAccepts</key>
 				<dict>
 					<key>Container</key>
 					<string>List</string>
 					<key>Optional</key>
-					<true/>
+					<false/>
 					<key>Types</key>
 					<array>
-						<string>com.apple.cocoa.string</string>
-					</array>
-				</dict>
-				<key>AMActionVersion</key>
-				<string>2.0.3</string>
-				<key>AMApplication</key>
-				<array>
-					<string>Automator</string>
-				</array>
-				<key>AMParameterProperties</key>
-				<dict>
-					<key>COMMAND_STRING</key>
-					<dict/>
-					<key>CheckedForUserDefaultShell</key>
-					<dict/>
-					<key>inputMethod</key>
-					<dict/>
-					<key>shell</key>
-					<dict/>
-					<key>source</key>
-					<dict/>
-				</dict>
-				<key>AMProvides</key>
-				<dict>
-					<key>Container</key>
-					<string>List</string>
-					<key>Types</key>
-					<array>
-						<string>com.apple.cocoa.string</string>
+						<string>com.apple.cocoa.attributed-string</string>
 					</array>
 				</dict>
 				<key>ActionBundlePath</key>
-				<string>/System/Library/Automator/Run Shell Script.action</string>
+				<string>/System/Library/Automator/Copy to Clipboard.action</string>
 				<key>ActionName</key>
-				<string>Run Shell Script</string>
+				<string>Copy to Clipboard</string>
 				<key>ActionParameters</key>
-				<dict>
-					<key>COMMAND_STRING</key>
-					<string>link=$(curl -F "file-upload[0]=@/private/tmp/toup.png" -F api_key=$(cat ~/.ptpimg.key) "https://ptpimg.me/upload.php" |awk -F ":|," '!(NR%4){print p$2}{p=$2}'|sed 's/^.*"\(.*\)" "\(.*\)".*$/https:\/\/ptpimg.me\/\1.\2/')
-
-echo $link</string>
-					<key>CheckedForUserDefaultShell</key>
-					<true/>
-					<key>inputMethod</key>
-					<integer>0</integer>
-					<key>shell</key>
-					<string>/bin/bash</string>
-					<key>source</key>
-					<string></string>
-				</dict>
+				<dict/>
 				<key>BundleIdentifier</key>
-				<string>com.apple.RunShellScript</string>
+				<string>com.apple.Automator.CopyToClipboard</string>
 				<key>CFBundleVersion</key>
-				<string>2.0.3</string>
+				<string>1.2.1</string>
 				<key>CanShowSelectedItemsWhenRun</key>
-				<false/>
-				<key>CanShowWhenRun</key>
 				<true/>
+				<key>CanShowWhenRun</key>
+				<false/>
 				<key>Category</key>
 				<array>
 					<string>AMCategoryUtilities</string>
 				</array>
 				<key>Class Name</key>
-				<string>RunShellScriptAction</string>
+				<string>AMCopyToClipboardAction</string>
 				<key>InputUUID</key>
-				<string>4C1242E7-DF65-4969-BC2D-01FB3E87DB9D</string>
+				<string>0807904F-E107-4317-B6D0-C361245DA7C0</string>
 				<key>Keywords</key>
 				<array>
-					<string>Shell</string>
-					<string>Script</string>
-					<string>Command</string>
-					<string>Run</string>
-					<string>Unix</string>
+					<string>Copy</string>
 				</array>
 				<key>OutputUUID</key>
-				<string>8ED6F051-9AF8-4E74-8193-23487E54CCB6</string>
+				<string>DBECB080-EB5D-4541-8050-41A4AF088D12</string>
 				<key>UUID</key>
-				<string>56426A44-F004-4E3A-AC8E-F3FE2E1C829B</string>
+				<string>0A805A95-D9BA-47C2-A8E5-E9F94FC1BCCA</string>
 				<key>UnlocalizedApplications</key>
 				<array>
-					<string>Automator</string>
+					<string>System</string>
 				</array>
 				<key>arguments</key>
-				<dict>
-					<key>0</key>
-					<dict>
-						<key>default value</key>
-						<integer>0</integer>
-						<key>name</key>
-						<string>inputMethod</string>
-						<key>required</key>
-						<string>0</string>
-						<key>type</key>
-						<string>0</string>
-						<key>uuid</key>
-						<string>0</string>
-					</dict>
-					<key>1</key>
-					<dict>
-						<key>default value</key>
-						<string></string>
-						<key>name</key>
-						<string>source</string>
-						<key>required</key>
-						<string>0</string>
-						<key>type</key>
-						<string>0</string>
-						<key>uuid</key>
-						<string>1</string>
-					</dict>
-					<key>2</key>
-					<dict>
-						<key>default value</key>
-						<false/>
-						<key>name</key>
-						<string>CheckedForUserDefaultShell</string>
-						<key>required</key>
-						<string>0</string>
-						<key>type</key>
-						<string>0</string>
-						<key>uuid</key>
-						<string>2</string>
-					</dict>
-					<key>3</key>
-					<dict>
-						<key>default value</key>
-						<string></string>
-						<key>name</key>
-						<string>COMMAND_STRING</string>
-						<key>required</key>
-						<string>0</string>
-						<key>type</key>
-						<string>0</string>
-						<key>uuid</key>
-						<string>3</string>
-					</dict>
-					<key>4</key>
-					<dict>
-						<key>default value</key>
-						<string>/bin/sh</string>
-						<key>name</key>
-						<string>shell</string>
-						<key>required</key>
-						<string>0</string>
-						<key>type</key>
-						<string>0</string>
-						<key>uuid</key>
-						<string>4</string>
-					</dict>
-				</dict>
-				<key>conversionLabel</key>
-				<integer>0</integer>
-				<key>isViewVisible</key>
-				<true/>
-				<key>location</key>
-				<string>309.000000:728.000000</string>
-				<key>nibPath</key>
-				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/English.lproj/main.nib</string>
+				<dict/>
 			</dict>
-			<key>isViewVisible</key>
-			<true/>
 		</dict>
 		<dict>
 			<key>action</key>
@@ -637,83 +373,12 @@ echo $link</string>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>309.000000:834.000000</string>
+				<string>309.000000:704.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Set Value of Variable.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
 			<key>isViewVisible</key>
 			<true/>
-		</dict>
-		<dict>
-			<key>action</key>
-			<dict>
-				<key>AMAccepts</key>
-				<dict>
-					<key>Container</key>
-					<string>List</string>
-					<key>Optional</key>
-					<false/>
-					<key>Types</key>
-					<array>
-						<string>com.apple.cocoa.attributed-string</string>
-					</array>
-				</dict>
-				<key>AMActionVersion</key>
-				<string>1.2.1</string>
-				<key>AMApplication</key>
-				<array>
-					<string>System</string>
-				</array>
-				<key>AMParameterProperties</key>
-				<dict/>
-				<key>AMProvides</key>
-				<dict>
-					<key>Container</key>
-					<string>List</string>
-					<key>Optional</key>
-					<false/>
-					<key>Types</key>
-					<array>
-						<string>com.apple.cocoa.attributed-string</string>
-					</array>
-				</dict>
-				<key>ActionBundlePath</key>
-				<string>/System/Library/Automator/Copy to Clipboard.action</string>
-				<key>ActionName</key>
-				<string>Copy to Clipboard</string>
-				<key>ActionParameters</key>
-				<dict/>
-				<key>BundleIdentifier</key>
-				<string>com.apple.Automator.CopyToClipboard</string>
-				<key>CFBundleVersion</key>
-				<string>1.2.1</string>
-				<key>CanShowSelectedItemsWhenRun</key>
-				<true/>
-				<key>CanShowWhenRun</key>
-				<false/>
-				<key>Category</key>
-				<array>
-					<string>AMCategoryUtilities</string>
-				</array>
-				<key>Class Name</key>
-				<string>AMCopyToClipboardAction</string>
-				<key>InputUUID</key>
-				<string>0807904F-E107-4317-B6D0-C361245DA7C0</string>
-				<key>Keywords</key>
-				<array>
-					<string>Copy</string>
-				</array>
-				<key>OutputUUID</key>
-				<string>DBECB080-EB5D-4541-8050-41A4AF088D12</string>
-				<key>UUID</key>
-				<string>0A805A95-D9BA-47C2-A8E5-E9F94FC1BCCA</string>
-				<key>UnlocalizedApplications</key>
-				<array>
-					<string>System</string>
-				</array>
-				<key>arguments</key>
-				<dict/>
-			</dict>
 		</dict>
 		<dict>
 			<key>action</key>
@@ -846,7 +511,7 @@ echo $link</string>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>309.000000:1090.000000</string>
+				<string>309.000000:894.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Display Notification.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
@@ -1016,7 +681,7 @@ rm /private/tmp/toup.png</string>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>309.000000:1273.000000</string>
+				<string>309.000000:1077.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/English.lproj/main.nib</string>
 			</dict>
@@ -1026,47 +691,33 @@ rm /private/tmp/toup.png</string>
 	</array>
 	<key>connectors</key>
 	<dict>
-		<key>5AEC168E-0B30-49D2-9A9A-3F7DA6D1A434</key>
-		<dict>
-			<key>from</key>
-			<string>56426A44-F004-4E3A-AC8E-F3FE2E1C829B - 56426A44-F004-4E3A-AC8E-F3FE2E1C829B</string>
-			<key>to</key>
-			<string>346EAD63-B813-4452-BA46-D61F48DF3A64 - 346EAD63-B813-4452-BA46-D61F48DF3A64</string>
-		</dict>
-		<key>61AF6778-201F-439A-B2A7-5A48E442AB91</key>
-		<dict>
-			<key>from</key>
-			<string>346EAD63-B813-4452-BA46-D61F48DF3A64 - 346EAD63-B813-4452-BA46-D61F48DF3A64</string>
-			<key>to</key>
-			<string>0A805A95-D9BA-47C2-A8E5-E9F94FC1BCCA - 0A805A95-D9BA-47C2-A8E5-E9F94FC1BCCA</string>
-		</dict>
-		<key>7629F097-270A-4CBA-A189-CB0879224DB2</key>
+		<key>40CB1473-C6C0-4DF9-88A5-109D079F05CA</key>
 		<dict>
 			<key>from</key>
 			<string>8AB4266B-1A5A-490D-B299-C0E990BEF9BF - 8AB4266B-1A5A-490D-B299-C0E990BEF9BF</string>
 			<key>to</key>
 			<string>C1F06CFE-94FC-4FA9-8235-833DDA49AEBD - C1F06CFE-94FC-4FA9-8235-833DDA49AEBD</string>
 		</dict>
-		<key>AA0063D0-D7ED-4BD6-9ECC-B42B433D3398</key>
+		<key>5047D596-37DF-47E8-A0BE-CBA4047C9B8A</key>
 		<dict>
 			<key>from</key>
 			<string>0A805A95-D9BA-47C2-A8E5-E9F94FC1BCCA - 0A805A95-D9BA-47C2-A8E5-E9F94FC1BCCA</string>
 			<key>to</key>
-			<string>8AB4266B-1A5A-490D-B299-C0E990BEF9BF - 8AB4266B-1A5A-490D-B299-C0E990BEF9BF</string>
+			<string>346EAD63-B813-4452-BA46-D61F48DF3A64 - 346EAD63-B813-4452-BA46-D61F48DF3A64</string>
 		</dict>
-		<key>B7CBDC9E-B257-4BCB-9471-6BC261137BEA</key>
+		<key>B04909F0-F9EC-414B-8BDB-4A0FD3ECCFB2</key>
 		<dict>
 			<key>from</key>
-			<string>CF01A79F-F97E-43FC-ADA2-667CAA30FED5 - CF01A79F-F97E-43FC-ADA2-667CAA30FED5</string>
+			<string>346EAD63-B813-4452-BA46-D61F48DF3A64 - 346EAD63-B813-4452-BA46-D61F48DF3A64</string>
 			<key>to</key>
-			<string>56426A44-F004-4E3A-AC8E-F3FE2E1C829B - 56426A44-F004-4E3A-AC8E-F3FE2E1C829B</string>
+			<string>8AB4266B-1A5A-490D-B299-C0E990BEF9BF - 8AB4266B-1A5A-490D-B299-C0E990BEF9BF</string>
 		</dict>
-		<key>F323FE19-738F-4310-BE4F-13D2946F678E</key>
+		<key>D144645A-2609-47A9-80EC-669153077AF4</key>
 		<dict>
 			<key>from</key>
 			<string>132F3CD7-3521-40EF-BEEF-4963930C7678 - 132F3CD7-3521-40EF-BEEF-4963930C7678</string>
 			<key>to</key>
-			<string>CF01A79F-F97E-43FC-ADA2-667CAA30FED5 - CF01A79F-F97E-43FC-ADA2-667CAA30FED5</string>
+			<string>0A805A95-D9BA-47C2-A8E5-E9F94FC1BCCA - 0A805A95-D9BA-47C2-A8E5-E9F94FC1BCCA</string>
 		</dict>
 	</dict>
 	<key>variables</key>

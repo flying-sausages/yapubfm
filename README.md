@@ -1,7 +1,7 @@
-# yapubfm
+# YAPUBFM
 Yet Another Ptpimg.me Uploader But For macOS
 
-Make screenshots, directly upload to ptptimg.me, and paste the link straight out your clipboard.
+Make screenshots, directly upload to ptptimg.me, and paste the link straight out from your clipboard.
 
 ![yapubfm in action](https://thumbs.gfycat.com/InbornFirsthandDragon-size_restricted.gif)
 
@@ -14,7 +14,7 @@ Make screenshots, directly upload to ptptimg.me, and paste the link straight out
   ```
 - Python packages: ptpimg_uploader, request
   ```bash
-  pip install ptpimg_uploader requests
+  pip3 install ptpimg_uploader requests
   ```
 ## Installation
 1. Download the latest release and unzip it
@@ -29,7 +29,7 @@ Make screenshots, directly upload to ptptimg.me, and paste the link straight out
   * If you don't have a ptptimg.me account, I'm not sure what to say.
 
 ## Use
-1. Open the service either from the shortcut I highly advise you to make, or from going via the Satus bar -> Application -> Services -> YAPUBFM
+1. Open the service either from the shortcut I highly advise you to make, or from going via the Satus bar --> Application --> Services --> YAPUBFM
 1. (Assuming this is not the first-time use, if so check the Installation chapter) Drag out a rectangle or press space to switch to window-selection mode
 1. Notification should ping once the link has been copied to your cliboard
 

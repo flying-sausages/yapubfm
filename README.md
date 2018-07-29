@@ -3,6 +3,8 @@ Yet Another Ptpimg.me Uploader But For macOS
 
 Make screenshots, directly upload to ptptimg.me, and paste the link straight out your clipboard.
 
+![yapubfm in action](https://thumbs.gfycat.com/InbornFirsthandDragon-size_restricted.gif)
+
 ## Prerequisites
 - A ptpimg.me account
 - Python3
@@ -18,8 +20,8 @@ Make screenshots, directly upload to ptptimg.me, and paste the link straight out
 1. Download the latest release and unzip it
 1. Install it as a service by double-clicking it.
   It will now be accessible from Application --> Services --> YAPUBFM
-1. Optionally set a hotkey for the service in System preferences
-  System preferences --> Keyboard --> Shortcuts --> Services --> General --> YAPUBFM
+1. Optionally set a hotkey for the service in System preferences  
+  ![Setting a shortcut in System Preferences](https://ptpimg.me/4k80h3.png)
 1. Run once
 1. Follow on-screen instructions
   * If you don't have python3 installed, check the prerequisites

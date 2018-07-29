@@ -59,37 +59,23 @@
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
-					<string>########## CHECK IF ALL THE NECESSARY SHIT IS INSTALLED ######
-#####SKIP IT ALL IF WE'VE BEEN THROUGH THIS BEFORE#######
+					<string>## CHECK IF ALL THE NECESSARY SHIT IS INSTALLED 
+# SKIP IT ALL IF WE'VE BEEN THROUGH THIS BEFORE 
 if [ -f ~/.ptpimg.key ]; then
-#Logically, if this file is written only if all the conditions are met and can't be written/exisiting if the conditions are met, then it should be fine right?
+	#Logically, if this file is written only if all the conditions are met and can't be written/exisiting if the conditions are met, then it should be fine right?
 	echo "Token found, therefore skipping all the dependencies"
 else
-	###### If there is no python3 present
+	# If there is no python3 present
 	if [ ! -f /usr/local/bin/python3 ]; then
 		echo "Python3 wasn't found in /usr/local/bin/python3"
-		osascript -e 'display alert "Python3 not found in /usr/local/bin/" message "Please install Python3 into this directory. Check the OP in the forums if you need help." with icon stop'
+		osascript -e 'display alert "Python3 not found in /usr/local/bin/" message "Please install Python3 into this directory. Check the OP in the forums if you need help."'
 	exit 1
 	else
 		echo "Python3 was found in /usr/local/bin/python3"
 	fi
-	##### If ptpimg_uploader isn't present
-	if /usr/local/bin/python3 -c "import ptpimg_uploader" &amp;&gt; /dev/null; then
-		echo "Dependencies found"
-	else
-		osascript&lt;&lt;EOD
-display alert "About to install Python dependencies, continue?" buttons {"Cancel", "Install"} with icon note
-if button returned of result = "Cancel" then
-     do shell script "exit 1"
-else
-    if button returned of result = "Install" then
-		do shell script "/usr/local/bin/pip3 install ptpimg_uploader"
-		do shell script "/usr/local/bin/pip3 install requests"
-    end if
-end if
-EOD
-	fi
-	##### If there is no key present
+	# Run the install for the dependencies, it will skip them if they're already installed
+	/usr/local/bin/pip3 install ptpimg_uploader
+	# If Create the key if it's not there.
 	if [ ! -f ~/.ptpimg.key ]; then
 	        osascript&lt;&lt;EOD
 	        display dialog "Enter your ptpimg.me token" default answer "Log in to ptpimg.me, view srouce, CTRL F for value"
@@ -208,12 +194,10 @@ fi</string>
 						<string>4</string>
 					</dict>
 				</dict>
-				<key>conversionLabel</key>
-				<integer>0</integer>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>529.000000:595.000000</string>
+				<string>309.000000:860.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/English.lproj/main.nib</string>
 			</dict>
@@ -382,12 +366,10 @@ fi</string>
 						<string>4</string>
 					</dict>
 				</dict>
-				<key>conversionLabel</key>
-				<integer>0</integer>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>529.000000:958.000000</string>
+				<string>309.000000:1043.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/English.lproj/main.nib</string>
 			</dict>
@@ -443,7 +425,8 @@ fi</string>
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
-					<string>/usr/local/bin/ptpimg_uploader /private/tmp/toup.png --api-key=$(cat ~/.ptpimg.key)</string>
+					<string>#Upload saved image to ptpimg.me using the apikey found in home folder
+/usr/local/bin/ptpimg_uploader /private/tmp/toup.png --api-key=$(cat ~/.ptpimg.key)</string>
 					<key>CheckedForUserDefaultShell</key>
 					<true/>
 					<key>inputMethod</key>
@@ -553,12 +536,10 @@ fi</string>
 						<string>4</string>
 					</dict>
 				</dict>
-				<key>conversionLabel</key>
-				<integer>0</integer>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>529.000000:1321.000000</string>
+				<string>309.000000:1226.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/English.lproj/main.nib</string>
 			</dict>
@@ -665,12 +646,10 @@ fi</string>
 						<string>0</string>
 					</dict>
 				</dict>
-				<key>conversionLabel</key>
-				<integer>0</integer>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>529.000000:1427.000000</string>
+				<string>309.000000:1332.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Set Value of Variable.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
@@ -746,8 +725,6 @@ fi</string>
 				</array>
 				<key>arguments</key>
 				<dict/>
-				<key>conversionLabel</key>
-				<integer>0</integer>
 			</dict>
 		</dict>
 		<dict>
@@ -878,12 +855,10 @@ fi</string>
 						<string>2</string>
 					</dict>
 				</dict>
-				<key>conversionLabel</key>
-				<integer>0</integer>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>529.000000:1735.000000</string>
+				<string>309.000000:1588.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Display Notification.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
@@ -939,8 +914,8 @@ fi</string>
 				<key>ActionParameters</key>
 				<dict>
 					<key>COMMAND_STRING</key>
-					<string>rm /private/tmp/toup.png
-afplay /System/Library/Sounds/Blow.aiff</string>
+					<string>afplay /System/Library/Sounds/Blow.aiff
+rm /private/tmp/toup.png</string>
 					<key>CheckedForUserDefaultShell</key>
 					<true/>
 					<key>inputMethod</key>
@@ -1050,12 +1025,10 @@ afplay /System/Library/Sounds/Blow.aiff</string>
 						<string>4</string>
 					</dict>
 				</dict>
-				<key>conversionLabel</key>
-				<integer>0</integer>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>529.000000:1918.000000</string>
+				<string>309.000000:1771.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/English.lproj/main.nib</string>
 			</dict>
@@ -1065,47 +1038,47 @@ afplay /System/Library/Sounds/Blow.aiff</string>
 	</array>
 	<key>connectors</key>
 	<dict>
-		<key>372309BE-E5E0-46C3-BB20-257004DEDD96</key>
-		<dict>
-			<key>from</key>
-			<string>CF01A79F-F97E-43FC-ADA2-667CAA30FED5 - CF01A79F-F97E-43FC-ADA2-667CAA30FED5</string>
-			<key>to</key>
-			<string>AA59FB14-EA4F-4483-82FE-0EF5BB7D84C4 - AA59FB14-EA4F-4483-82FE-0EF5BB7D84C4</string>
-		</dict>
-		<key>3D657890-AAC6-416C-B3B1-4CF413D70C48</key>
-		<dict>
-			<key>from</key>
-			<string>346EAD63-B813-4452-BA46-D61F48DF3A64 - 346EAD63-B813-4452-BA46-D61F48DF3A64</string>
-			<key>to</key>
-			<string>0A805A95-D9BA-47C2-A8E5-E9F94FC1BCCA - 0A805A95-D9BA-47C2-A8E5-E9F94FC1BCCA</string>
-		</dict>
-		<key>4E9A3EC2-B7F4-4692-A7C7-9F12D942C20E</key>
-		<dict>
-			<key>from</key>
-			<string>AA59FB14-EA4F-4483-82FE-0EF5BB7D84C4 - AA59FB14-EA4F-4483-82FE-0EF5BB7D84C4</string>
-			<key>to</key>
-			<string>346EAD63-B813-4452-BA46-D61F48DF3A64 - 346EAD63-B813-4452-BA46-D61F48DF3A64</string>
-		</dict>
-		<key>A2C6AECA-17F1-4F39-B2C2-432D49064899</key>
-		<dict>
-			<key>from</key>
-			<string>8AB4266B-1A5A-490D-B299-C0E990BEF9BF - 8AB4266B-1A5A-490D-B299-C0E990BEF9BF</string>
-			<key>to</key>
-			<string>C1F06CFE-94FC-4FA9-8235-833DDA49AEBD - C1F06CFE-94FC-4FA9-8235-833DDA49AEBD</string>
-		</dict>
-		<key>E428B941-6782-4751-9F47-13F89ED739F6</key>
+		<key>31CA044F-BD90-4B14-B2C8-47DF1294DDAB</key>
 		<dict>
 			<key>from</key>
 			<string>132F3CD7-3521-40EF-BEEF-4963930C7678 - 132F3CD7-3521-40EF-BEEF-4963930C7678</string>
 			<key>to</key>
 			<string>CF01A79F-F97E-43FC-ADA2-667CAA30FED5 - CF01A79F-F97E-43FC-ADA2-667CAA30FED5</string>
 		</dict>
-		<key>E8D8D71F-E44A-4061-AB97-7009BFC70060</key>
+		<key>4BDAADF4-BC1B-4E2C-A523-3BB0E4A94C8E</key>
+		<dict>
+			<key>from</key>
+			<string>346EAD63-B813-4452-BA46-D61F48DF3A64 - 346EAD63-B813-4452-BA46-D61F48DF3A64</string>
+			<key>to</key>
+			<string>0A805A95-D9BA-47C2-A8E5-E9F94FC1BCCA - 0A805A95-D9BA-47C2-A8E5-E9F94FC1BCCA</string>
+		</dict>
+		<key>58BA6AD4-86B1-402C-9D7E-13B4B6451A89</key>
+		<dict>
+			<key>from</key>
+			<string>8AB4266B-1A5A-490D-B299-C0E990BEF9BF - 8AB4266B-1A5A-490D-B299-C0E990BEF9BF</string>
+			<key>to</key>
+			<string>C1F06CFE-94FC-4FA9-8235-833DDA49AEBD - C1F06CFE-94FC-4FA9-8235-833DDA49AEBD</string>
+		</dict>
+		<key>6267FB5C-B631-40E0-980E-5F7836C7CB67</key>
 		<dict>
 			<key>from</key>
 			<string>0A805A95-D9BA-47C2-A8E5-E9F94FC1BCCA - 0A805A95-D9BA-47C2-A8E5-E9F94FC1BCCA</string>
 			<key>to</key>
 			<string>8AB4266B-1A5A-490D-B299-C0E990BEF9BF - 8AB4266B-1A5A-490D-B299-C0E990BEF9BF</string>
+		</dict>
+		<key>C8FDCDAC-9E8E-4251-8F28-A5ADE45EF5D2</key>
+		<dict>
+			<key>from</key>
+			<string>AA59FB14-EA4F-4483-82FE-0EF5BB7D84C4 - AA59FB14-EA4F-4483-82FE-0EF5BB7D84C4</string>
+			<key>to</key>
+			<string>346EAD63-B813-4452-BA46-D61F48DF3A64 - 346EAD63-B813-4452-BA46-D61F48DF3A64</string>
+		</dict>
+		<key>CC5DA6F3-5F00-4F43-9434-0A125A270C3A</key>
+		<dict>
+			<key>from</key>
+			<string>CF01A79F-F97E-43FC-ADA2-667CAA30FED5 - CF01A79F-F97E-43FC-ADA2-667CAA30FED5</string>
+			<key>to</key>
+			<string>AA59FB14-EA4F-4483-82FE-0EF5BB7D84C4 - AA59FB14-EA4F-4483-82FE-0EF5BB7D84C4</string>
 		</dict>
 	</dict>
 	<key>variables</key>

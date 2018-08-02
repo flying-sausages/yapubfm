@@ -67,7 +67,6 @@ if [ ! -f ~/.ptpimg.key ]; then
         $token
 EOD
 )
-        token=$(sed 's/-//g' &lt;&lt;&lt; $token)
         echo "$token" &gt; ~/.ptpimg.key
         chmod 0600 ~/.ptpimg.key
 fi
@@ -192,7 +191,7 @@ echo $link</string>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>309.000000:532.000000</string>
+				<string>309.000000:712.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/English.lproj/main.nib</string>
 			</dict>
@@ -373,7 +372,7 @@ echo $link</string>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>309.000000:704.000000</string>
+				<string>309.000000:884.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Set Value of Variable.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
@@ -511,7 +510,7 @@ echo $link</string>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>309.000000:894.000000</string>
+				<string>309.000000:1074.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Display Notification.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
@@ -681,7 +680,7 @@ rm /private/tmp/toup.png</string>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>309.000000:1077.000000</string>
+				<string>309.000000:1257.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/English.lproj/main.nib</string>
 			</dict>

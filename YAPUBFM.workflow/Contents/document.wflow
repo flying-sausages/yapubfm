@@ -71,29 +71,40 @@ EOD
         chmod 0600 ~/.ptpimg.key
 fi
 
-#Start an interactive screencapture that saves to the specified location
-/usr/sbin/screencapture -i /private/tmp/toup.png
+if [ "$*" == "" ]; then
+    echo "No arguments provided"
+	#Start an interactive screencapture that saves to the specified location
+	/usr/sbin/screencapture -i /private/tmp/toup.png
+	if [ ! -f /private/tmp/toup.png ]; then
+		#there is not file there
+		echo "no file"
+		exit
+	fi
+	#Upload the image and parse it
+	link=$(curl -F "file-upload[0]=@/private/tmp/toup.png" -F api_key=$(cat ~/.ptpimg.key) "https://ptpimg.me/upload.php" |awk -F ":|," '!(NR%4){print p$2}{p=$2}'|sed 's/^.*"\(.*\)" "\(.*\)".*$/https:\/\/ptpimg.me\/\1.\2/')
+	rm /private/tmp/toup.png
+else
 
-if [ ! -f /private/tmp/toup.png ]; then
-	#there is not file there
-	echo "no file"
-	exit
+link=""
+	for i in $*; do 
+		echo $i
+		part=$(curl -F "file-upload[0]=@$i" -F api_key=$(cat ~/.ptpimg.key) "https://ptpimg.me/upload.php" |awk -F ":|," '!(NR%4){print p$2}{p=$2}'|sed 's/^.*"\(.*\)" "\(.*\)".*$/https:\/\/ptpimg.me\/\1.\2/')
+		echo "$part"
+		link+="$part "
+	done
 fi
 
-#Upload the image and parse it
-link=$(curl -F "file-upload[0]=@/private/tmp/toup.png" -F api_key=$(cat ~/.ptpimg.key) "https://ptpimg.me/upload.php" |awk -F ":|," '!(NR%4){print p$2}{p=$2}'|sed 's/^.*"\(.*\)" "\(.*\)".*$/https:\/\/ptpimg.me\/\1.\2/')
-
-#return link
+#return link to clipboard
 echo "$link" | pbcopy
+
+#echoing into automator in case debugging needed
 echo "$link"
 
-osascript -e 'display notification "'$link'" with title "Link copied!"'
-
-rm /private/tmp/toup.png</string>
+osascript -e 'display notification "'$link'" with title "Link copied!"'</string>
 					<key>CheckedForUserDefaultShell</key>
 					<true/>
 					<key>inputMethod</key>
-					<integer>0</integer>
+					<integer>1</integer>
 					<key>shell</key>
 					<string>/bin/bash</string>
 					<key>source</key>
@@ -202,7 +213,7 @@ rm /private/tmp/toup.png</string>
 				<key>isViewVisible</key>
 				<true/>
 				<key>location</key>
-				<string>505.500000:708.000000</string>
+				<string>505.500000:587.000000</string>
 				<key>nibPath</key>
 				<string>/System/Library/Automator/Run Shell Script.action/Contents/Resources/Base.lproj/main.nib</string>
 			</dict>
@@ -318,15 +329,15 @@ rm /private/tmp/toup.png</string>
 		<key>backgroundColorName</key>
 		<string>systemBlueColor</string>
 		<key>inputTypeIdentifier</key>
-		<string>com.apple.Automator.fileSystemObject.image</string>
+		<string>com.apple.Automator.nothing</string>
 		<key>outputTypeIdentifier</key>
 		<string>com.apple.Automator.nothing</string>
 		<key>presentationMode</key>
-		<integer>15</integer>
+		<integer>11</integer>
 		<key>processesInput</key>
 		<integer>0</integer>
 		<key>serviceInputTypeIdentifier</key>
-		<string>com.apple.Automator.fileSystemObject.image</string>
+		<string>com.apple.Automator.nothing</string>
 		<key>serviceOutputTypeIdentifier</key>
 		<string>com.apple.Automator.nothing</string>
 		<key>serviceProcessesInput</key>
